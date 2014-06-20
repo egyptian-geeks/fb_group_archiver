@@ -1,0 +1,11 @@
+D:\sandbox\GroupArchiver\GroupArchiver\bin\Debug\data.xml
+D:\sandbox\GroupArchiver\GroupArchiver\bin\Debug\Facebook.dll
+D:\sandbox\GroupArchiver\GroupArchiver\bin\Debug\GroupArchiver.exe
+D:\sandbox\GroupArchiver\GroupArchiver\bin\Debug\GroupArchiver.pdb
+D:\sandbox\GroupArchiver\GroupArchiver\obj\x86\Debug\GroupArchiver.Properties.Resources.resources
+D:\sandbox\GroupArchiver\GroupArchiver\obj\x86\Debug\GroupArchiver.csproj.GenerateResource.Cache
+D:\sandbox\GroupArchiver\GroupArchiver\obj\x86\Debug\GroupArchiver.exe
+D:\sandbox\GroupArchiver\GroupArchiver\obj\x86\Debug\GroupArchiver.pdb
+D:\sandbox\GroupArchiver\GroupArchiver\obj\x86\Debug\GroupArchiver.csprojResolveAssemblyReference.cache
+D:\sandbox\GroupArchiver\GroupArchiver\obj\x86\Debug\GroupArchiver.Browser.resources
+D:\sandbox\GroupArchiver\GroupArchiver\obj\x86\Debug\GroupArchiver.Groups.resources
