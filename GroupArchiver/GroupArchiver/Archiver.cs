@@ -30,11 +30,12 @@ namespace GroupArchiver
            }
            dynamic data = fb.Get("/" + groupId + "/feed?limit=1000" + sincestr);
            Data.SaveGroup(groupId, DateTime.Now.ToEpoch(), path);
+           var utf8WithoutBom = new System.Text.UTF8Encoding(false);
            while (data.data.Count > 0)
            {
                foreach (var item in data.data)
                {
-                   File.WriteAllText(path+"\\" + item.id + ".json", item.ToString(),UTF8Encoding.UTF8);
+                   File.WriteAllText(path + "\\" + item.id + ".json", item.ToString(), utf8WithoutBom);
                   
                }
                string next = Archiver.ExtractNextPageData(data);
