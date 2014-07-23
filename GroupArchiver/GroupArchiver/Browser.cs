@@ -45,8 +45,18 @@ namespace GroupArchiver
 
             var fb = new FacebookClient();
             return fb.GetLoginUrl(parameters);
+            
         }
+        private Uri GenerateLogoutUrl()
+        {
 
+          
+            dynamic parameters = new ExpandoObject();
+           
+            var fb = new FacebookClient();
+            return fb.GetLogoutUrl(parameters);
+
+        }
         private void webBrowser1_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
             var fb = new FacebookClient();
@@ -58,7 +68,7 @@ namespace GroupArchiver
                 {
                     var accesstoken = oauthResult.AccessToken;
                     Data.Set("token", FB.ExtendToken(accesstoken));
-                    next.Show();
+                   
                     this.Close();
                 }
                 else
@@ -70,10 +80,7 @@ namespace GroupArchiver
            
         }
 
-        private void Browser_Leave(object sender, EventArgs e)
-        {
-            next.Show();
-        }
+       
 
         private void Browser_Load(object sender, EventArgs e)
         {
@@ -85,10 +92,19 @@ namespace GroupArchiver
 
                     break;
                 case UrlType.Logout:
+                    webBrowser1.Navigate(GenerateLogoutUrl());
+                     Data.Set("token", String.Empty);
+         
                     break;
                 default:
                     break;
             }   
+        }
+
+        private void Browser_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            FB.GetClient(true);
+            next.Show();
         }
 
       

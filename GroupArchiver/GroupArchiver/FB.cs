@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Facebook;
+using System.Net;
+using System.IO;
+using System.Xml.Linq;
 
 namespace GroupArchiver
 {
@@ -10,9 +13,10 @@ namespace GroupArchiver
     {
        public static FacebookClient client = null;
        public static dynamic me;
-       public static FacebookClient GetClient()
+       public static FacebookClient GetClient(bool reload=false)
        {
-          
+           if (reload)
+               client = null;
            if (client!=null)
            {
                return client;
@@ -22,9 +26,13 @@ namespace GroupArchiver
            try
            {
                client = new FacebookClient(Data.Get("token"));
-              
+
                me = client.Get("me/");
-              
+
+           }
+           catch (WebExceptionWrapper)
+           {
+               throw new NoConnection();
            }
            catch (Exception)
            {
@@ -54,8 +62,16 @@ namespace GroupArchiver
            });
            return result.access_token;
        }
-       
 
+       public static string GetServerTime()
+       {
+           WebRequest req = HttpWebRequest.Create("https://api.facebook.com/method/fql.query?query=SELECT+now%28%29+FROM+link_stat+WHERE+url+%3D+%271.2%27&format=xml");
+           WebResponse res = req.GetResponse();
+           var stream = res.GetResponseStream();
+           var streamreader = new StreamReader(stream);
+           XDocument doc = XDocument.Parse(streamreader.ReadToEnd());
+           return doc.Root.Value;
+       }
 
      
       
