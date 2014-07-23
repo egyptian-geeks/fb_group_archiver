@@ -37,13 +37,13 @@ namespace GroupArchiver
 
         }
 
-        public static void SaveGroup(string id, long lastUpdate, string SavePath)
+        public static void SaveGroup(string id, string lastUpdate, string SavePath)
         {
             XDocument doc = XDocument.Load(Application.StartupPath + "\\data.xml");
             if (doc.Root.Elements("group").Where(c=>c.Element("id").Value==id).Count()!=0)
             {
                 XElement foundGroup = doc.Root.Elements("group").Where(c => c.Element("id").Value == id).FirstOrDefault();
-                foundGroup.Element("lastupdate").Value = lastUpdate.ToString();
+                foundGroup.Element("lastupdate").Value = lastUpdate;
                 foundGroup.Element("savepath").Value = SavePath;
             }
             else
@@ -56,6 +56,27 @@ namespace GroupArchiver
             }
 
             doc.Save(Application.StartupPath + "\\data.xml");
+        }
+
+        public static string GetGroupLastUpdate(string id)
+        {
+            XDocument doc = XDocument.Load(Application.StartupPath + "\\data.xml");
+            if (doc.Root.Elements("group").Where(c => c.Element("id").Value == id).Count() != 0)
+            {
+                XElement foundGroup = doc.Root.Elements("group").Where(c => c.Element("id").Value == id).FirstOrDefault();
+                return foundGroup.Element("lastupdate").Value;
+            }
+            return null;
+        }
+        public static string GetGroupLastLocation(string id)
+        {
+            XDocument doc = XDocument.Load(Application.StartupPath + "\\data.xml");
+            if (doc.Root.Elements("group").Where(c => c.Element("id").Value == id).Count() != 0)
+            {
+                XElement foundGroup = doc.Root.Elements("group").Where(c => c.Element("id").Value == id).FirstOrDefault();
+                return foundGroup.Element("savepath").Value;
+            }
+            return null;
         }
     }
 }

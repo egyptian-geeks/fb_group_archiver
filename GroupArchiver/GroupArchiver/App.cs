@@ -10,15 +10,23 @@ namespace GroupArchiver
     {
         public App()
         {
-            if (FB.GetClient()==null)
+            try
             {
-                Browser b = new Browser(UrlType.Login,new Groups());
-                b.Show();
+                if (FB.GetClient() == null)
+                {
+                    Browser b = new Browser(UrlType.Login, new Groups());
+                    b.Show();
+                }
+                else
+                {
+                    Groups g = new Groups();
+                    g.Show();
+                }
             }
-            else
+            catch (NoConnection)
             {
-                Groups g = new Groups();
-                g.Show();
+                MessageBox.Show("Could not reach facebook, check internet connection");
+                Environment.Exit(1);
             }
         }
     }

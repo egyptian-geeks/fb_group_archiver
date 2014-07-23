@@ -19,28 +19,37 @@ namespace GroupArchiver
            return pageToken+"&"+until;
        }
       
-       public static void GetAllPosts(string groupId,string path,DateTime? since=null)
+       public static void GetAllPosts(string groupId,string path,string since=null)
        {
+           List<string> files = new List<string>();
            FacebookClient fb = FB.GetClient();
+           
            string sincestr = "";
            if (since != null)
            {
-               long epoch = since.Value.ToEpoch();
-               sincestr = "&since=" + epoch.ToString();
+               sincestr = "&since=" + since.ToString();
            }
            dynamic data = fb.Get("/" + groupId + "/feed?limit=1000" + sincestr);
-           Data.SaveGroup(groupId, DateTime.Now.ToEpoch(), path);
+           Data.SaveGroup(groupId, FB.GetServerTime(), path);
+           string postPath = path+"\\post";
+           Directory.CreateDirectory(postPath);
            var utf8WithoutBom = new System.Text.UTF8Encoding(false);
            while (data.data.Count > 0)
            {
                foreach (var item in data.data)
                {
-                   File.WriteAllText(path + "\\" + item.id + ".json", item.ToString(), utf8WithoutBom);
-                  
+                   string filePath = postPath + "\\" + item.id + ".json";
+                   File.WriteAllText(filePath, item.ToString(),utf8WithoutBom);
+                   files.Add(filePath);
                }
                string next = Archiver.ExtractNextPageData(data);
-               data = fb.Get("/"+groupId+"/feed?limit=1000&" + next);
+               data = fb.Get("/"+groupId+"/feed?limit=1000&" + next+sincestr);
            }
+           if (since==null)
+           {
+               Summerizer.ResetSummaryCount(path);
+           }
+           Summerizer.Summerize(files,path);
            
         }
     }
